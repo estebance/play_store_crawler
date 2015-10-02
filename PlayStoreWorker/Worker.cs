@@ -29,6 +29,11 @@ namespace PlayStoreWorker
             Logger logger = LogManager.GetCurrentClassLogger ();
             logger.Info ("Worker Started");
 
+	    // insert a proxy file 
+	
+	    args = new string[] {"/home/play/code/crawlerverificator/ProxyList/newproxy.txt"};
+	    logger.Info(args[0]);		   	
+
             // Control Variable (Bool - Should the process use proxies? )
             bool isUsingProxies = false;
 
@@ -50,7 +55,7 @@ namespace PlayStoreWorker
 
                 // Reading Proxies from File
                 string[] fLines = File.ReadAllLines (fPath, Encoding.GetEncoding ("UTF-8"));
-
+                logger.Info ("Worker Started with proxies");
                 try
                 {
                     // Actual Load of Proxies
@@ -83,6 +88,10 @@ namespace PlayStoreWorker
             // Iterating Over MongoDB Records while no document is found to be processed                
             while ((app = mongoDB.FindAndModify ()) != null)
             {
+
+		//double delayTime = TimeSpan.FromSeconds (10).TotalMilliseconds;
+		//Thread.Sleep (Convert.ToInt32 (delayTime));
+
                 try
                 {
                     // Building APP URL
@@ -116,10 +125,14 @@ namespace PlayStoreWorker
                     if (isUsingProxies)
                     {
                         server.Proxy = ProxiesLoader.GetWebProxy ();
-                    }
+                    	logger.Info(server.Proxy.Address);
+		    }
 
                     // Issuing HTTP Request
                     string response          = server.Get (appUrl);
+
+                    //logger.Info ("Get response from proxy");
+		    //logger.Info(response);
 
                     // Flag Indicating Success while processing and parsing this app
                     bool ProcessingWorked = true;
@@ -141,7 +154,7 @@ namespace PlayStoreWorker
                         if (isUsingProxies)
                         {
                             // Waits two seconds everytime
-                            waitTime = TimeSpan.FromSeconds (2).TotalMilliseconds;
+                            waitTime = TimeSpan.FromSeconds (30).TotalMilliseconds;
                         }
                         else
                         {
@@ -151,12 +164,13 @@ namespace PlayStoreWorker
                             // Checking for maximum retry count
                             if (retryCounter >= 8)
                             {
-                                waitTime = TimeSpan.FromMinutes (20).TotalMilliseconds;
+                                waitTime = TimeSpan.FromMinutes (1).TotalMilliseconds;
                             }
                             else
                             {
                                 // Calculating next wait time ( 2 ^ retryCounter seconds)
-                                waitTime = TimeSpan.FromSeconds (Math.Pow (2, retryCounter)).TotalMilliseconds;
+                                waitTime = TimeSpan.FromMinutes (1).TotalMilliseconds;
+			        //waitTime = TimeSpan.FromSeconds (Math.Pow (2, retryCounter)).TotalMilliseconds;
                             }
                         }
 

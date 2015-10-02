@@ -70,16 +70,16 @@ namespace SharedLibrary
         public static readonly int MAX_QUEUE_TRIES      = 5;
         
         // MongoDB - Remote Server
-        public static readonly string MONGO_SERVER           = "mobiledata.bigdatacorp.com.br"; 
-        public static readonly string MONGO_PORT             = "21766";
-        public static readonly string MONGO_USER             = "GitHubCrawlerUser";
-        public static readonly string MONGO_PASS             = "g22LrJvULU5B";
+        public static readonly string MONGO_SERVER           = "playstocrawler.cloudapp.net"; 
+        public static readonly string MONGO_PORT             = "27017";
+        public static readonly string MONGO_USER             = "";
+        public static readonly string MONGO_PASS             = "";
         public static readonly string MONGO_DATABASE         = "MobileAppsData";
-        public static readonly string MONGO_COLLECTION       = "PlayStore_2015_05";
+        public static readonly string MONGO_COLLECTION       = "PlayStore_2015_06";
         public static readonly string REVIEWS_COLLECTION     = "ProcessedReviews";
         public static readonly string QUEUED_APPS_COLLECTION = "PlayStore_QueuedApps_2015_05";
         public static readonly string REVIEWERS_COLLECTION   = "ReviewersData";
-        public static readonly string MONGO_AUTH_DB          = "MobileAppsData";
+        public static readonly string MONGO_AUTH_DB          = "";
         public static readonly int    MONGO_TIMEOUT          = 120000;
 
         // Date Time Format
